@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3BA2C75E1A7B790700BCA27A /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BA2C75C1A7B790700BCA27A /* FilterViewController.m */; };
-		3BA2C75F1A7B790700BCA27A /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BA2C75D1A7B790700BCA27A /* FilterViewController.xib */; };
 		3BA2C7631A7B88C700BCA27A /* SwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BA2C7611A7B88C700BCA27A /* SwitchCell.m */; };
 		3BA2C7641A7B88C700BCA27A /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BA2C7621A7B88C700BCA27A /* SwitchCell.xib */; };
 		3BE3CA781A7F53B300C444F1 /* CollectiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE3CA761A7F53B300C444F1 /* CollectiveViewController.m */; };
@@ -45,9 +43,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3BA2C75B1A7B790700BCA27A /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
-		3BA2C75C1A7B790700BCA27A /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
-		3BA2C75D1A7B790700BCA27A /* FilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
 		3BA2C7601A7B88C700BCA27A /* SwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchCell.h; sourceTree = "<group>"; };
 		3BA2C7611A7B88C700BCA27A /* SwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchCell.m; sourceTree = "<group>"; };
 		3BA2C7621A7B88C700BCA27A /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
@@ -144,9 +139,6 @@
 				420474F818DC2B2100E88E07 /* MainViewController.h */,
 				420474F918DC2B2100E88E07 /* MainViewController.m */,
 				420474FA18DC2B2100E88E07 /* MainViewController.xib */,
-				3BA2C75B1A7B790700BCA27A /* FilterViewController.h */,
-				3BA2C75C1A7B790700BCA27A /* FilterViewController.m */,
-				3BA2C75D1A7B790700BCA27A /* FilterViewController.xib */,
 				3BA2C7601A7B88C700BCA27A /* SwitchCell.h */,
 				3BA2C7611A7B88C700BCA27A /* SwitchCell.m */,
 				3BA2C7621A7B88C700BCA27A /* SwitchCell.xib */,
@@ -319,7 +311,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BA2C75F1A7B790700BCA27A /* FilterViewController.xib in Resources */,
 				42FD6C5518DC286B000BF2B9 /* InfoPlist.strings in Resources */,
 				3BE580531A7A34D300DD416C /* BusinessCell.xib in Resources */,
 				420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */,
@@ -383,7 +374,6 @@
 				42FD6C5718DC286B000BF2B9 /* main.m in Sources */,
 				3BE3CA781A7F53B300C444F1 /* CollectiveViewController.m in Sources */,
 				420474F618DC299500E88E07 /* YelpClient.m in Sources */,
-				3BA2C75E1A7B790700BCA27A /* FilterViewController.m in Sources */,
 				420474FB18DC2B2100E88E07 /* MainViewController.m in Sources */,
 				3BE580521A7A34D300DD416C /* BusinessCell.m in Sources */,
 			);

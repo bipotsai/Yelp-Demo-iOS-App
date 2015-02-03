@@ -10,7 +10,6 @@
 #import "YelpClient.h"
 #import "Business.h"
 #import "BusinessCell.h"
-#import "FilterViewController.h"
 #import "CollectiveViewController.h"
 
 NSString * const kYelpConsumerKey = @"vxKwwcR_NMQ7WaEiQBK_CA";
@@ -18,7 +17,7 @@ NSString * const kYelpConsumerSecret = @"33QCvh5bIF5jIHR5klQr7RtBDhQ";
 NSString * const kYelpToken = @"uRcRswHFYa1VkDrGV6LAW2F8clGh5JHV";
 NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FilterViewControllerDelegate, UISearchBarDelegate, CollectiveViewControllerDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, CollectiveViewControllerDelegate>
 
 
 @property (nonatomic, strong) YelpClient *client;
@@ -65,9 +64,16 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     [self.tableView registerNib:[UINib nibWithNibName:@"BusinessCell" bundle:nil] forCellReuseIdentifier:@"BusinessCell"];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
+    
+    // Color the Nav Bar
+    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.translucent = YES;
+
+    
     // filter button
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(onFilterButton)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
     
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.showsCancelButton = YES;
@@ -120,14 +126,6 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 #pragma mark - Filter delegate methods
 
--(void) filterViewController:(FilterViewController *)filterViewController didChangeFilter:(NSDictionary *)filters{
-    
-    // when the event happens what to do?
-    // fire new network event
-    NSLog(@"Fire new Network Event : %@", filters);
-    [self fetchBusinessWithQuery:@"restaurants" params:filters];
-}
-
 -(void) collectiveViewController:(CollectiveViewController *)collectiveViewController didChangeFilter:(NSDictionary *)collectivefilters{
     // when the event happens what to do?
     // fire new network event
@@ -157,22 +155,12 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 - (void) onFilterButton {
     
-    
-//    FilterViewController *vc = [[FilterViewController alloc] init];
-//    // When you go to teh next screen. register that to the next screen you will listen to this event
-//    // listen to the delegate created
-//    vc.delegate = self;
-//    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-//    [self presentViewController:nvc animated:YES completion:nil];
-    
-    
     CollectiveViewController *vc = [[CollectiveViewController alloc] init];
     // When you go to teh next screen. register that to the next screen you will listen to this event
     // listen to the delegate created
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc ];
-    self.navigationController.navigationBar.tintColor = [UIColor redColor];
-    self.navigationController.navigationBar.tintColor = [UIColor redColor];
+    
     [self presentViewController:nvc animated:YES completion:nil];
     
     
