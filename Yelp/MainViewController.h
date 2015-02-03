@@ -10,5 +10,7 @@
 
 @interface MainViewController : UIViewController 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property int offset;
+@property ( nonatomic, strong) NSDictionary *params;
 
 @end

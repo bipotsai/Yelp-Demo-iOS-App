@@ -11,6 +11,7 @@
 #import "Business.h"
 #import "BusinessCell.h"
 #import "CollectiveViewController.h"
+#import "UIScrollView+InfiniteScroll.h"
 
 NSString * const kYelpConsumerKey = @"vxKwwcR_NMQ7WaEiQBK_CA";
 NSString * const kYelpConsumerSecret = @"33QCvh5bIF5jIHR5klQr7RtBDhQ";
@@ -22,8 +23,9 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 @property (nonatomic, strong) YelpClient *client;
 @property ( nonatomic, strong) NSArray *businesses;
+@property ( nonatomic, strong) UISearchBar *searchBar;
 
--(void) fetchBusinessWithQuery:(NSString *)query params:(NSDictionary *)params;
+-(void) fetchBusinessWithQuery:(NSString *)query offset:(int)offset params:(NSDictionary *)params;
 @end
 
 @implementation MainViewController
@@ -35,7 +37,8 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
         // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
         self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
         
-        [self fetchBusinessWithQuery:@"restaurants" params:nil]; // search all restaurents by default
+        self.offset = 0;
+        [self fetchBusinessWithQuery:@"restaurants" offset:self.offset params:nil]; // search all restaurents by default
         
 //        [self.client searchWithTerm:@"Thai" params:nil success:^(AFHTTPRequestOperation *operation, id response) {
 ////            NSLog(@"response: %@", response);
@@ -59,28 +62,31 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
     
     self.tableView.dataSource   = self;
     self.tableView.delegate     = self;
-//    self.title                  = @"Yelp";
+    self.offset                 = 0;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"BusinessCell" bundle:nil] forCellReuseIdentifier:@"BusinessCell"];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     
     // Color the Nav Bar
-    self.navigationController.navigationBar.barTintColor = [UIColor redColor];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.barTintColor    = [UIColor redColor];
+    self.navigationController.navigationBar.tintColor       = [UIColor blackColor];
+    self.navigationController.navigationBar.translucent     = YES;
 
     
     // filter button
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
     
-    UISearchBar *searchBar = [[UISearchBar alloc] init];
-    searchBar.showsCancelButton = YES;
-    self.navigationItem.titleView = searchBar;
+    // Search Bar
+    self.searchBar                      = [[UISearchBar alloc] init];
+    self.searchBar.showsCancelButton    = YES;
+    self.navigationItem.titleView       = self.searchBar;
+
+    // Infinite Scroll
+    self.tableView.infiniteScrollIndicatorStyle = UIActivityIndicatorViewStyleGray;
     
     // set listner
-    searchBar.delegate = self;
+    self.searchBar.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,8 +102,21 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    NSLog(@"Section %ld Row %ld", indexPath.section, indexPath.row);
+    
     BusinessCell *cell  = [tableView dequeueReusableCellWithIdentifier:@"BusinessCell"];
     cell.business       = self.businesses[indexPath.row];
+    
+    if(indexPath.row == 19){
+        // setup infinite scroll
+        [self.tableView addInfiniteScrollWithHandler:^(UIScrollView* scrollView) {
+            self.offset = self.offset + 20;
+            [self fetchBusinessWithQuery:@"restaurants" offset:self.offset params:self.params];
+            // finish infinite scroll animation
+            [scrollView finishInfiniteScroll];
+        }];
+    }
+    
     return cell;
     
 }
@@ -106,11 +125,13 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"Search text  : %@",searchText );
-    [self fetchBusinessWithQuery:searchText params:nil];
+    self.offset = 0;
+    [self fetchBusinessWithQuery:searchText offset:self.offset params:nil];
 }
 
 -(void) searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     [self.view endEditing:YES];
+    searchBar.text = nil;
     [searchBar resignFirstResponder];
 
 }
@@ -129,21 +150,25 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
 -(void) collectiveViewController:(CollectiveViewController *)collectiveViewController didChangeFilter:(NSDictionary *)collectivefilters{
     // when the event happens what to do?
     // fire new network event
+    self.searchBar.text = nil;
+    self.params = collectivefilters;
     NSLog(@"Fire new Network Event : %@", collectivefilters);
-    [self fetchBusinessWithQuery:@"restaurants" params:collectivefilters];
+    self.offset = 0;
+    [self fetchBusinessWithQuery:@"restaurants" offset:self.offset params:collectivefilters];
 }
 
 #pragma mark - Private Methods
 
--(void)fetchBusinessWithQuery:(NSString *)query params:(NSDictionary *)params{
-    [self.client searchWithTerm:query params:params success:^(AFHTTPRequestOperation *operation, id response) {
-        NSLog(@"REsponse :  %@", response);
+-(void)fetchBusinessWithQuery:(NSString *)query offset:(int)offset params:(NSDictionary *)params{
+    
+    [self.client searchWithTerm:query offset:offset params:params success:^(AFHTTPRequestOperation *operation, id response) {
+//        NSLog(@"REsponse :  %@", response);
 
         NSLog(@"query: %@ , params %@", query, params);
         
         NSArray *businessDictionaries = response[@"businesses"];
         
-        NSLog(@"Result Set Found :  %ld items", businessDictionaries.count);
+//        NSLog(@"Result Set Found :  %ld items", businessDictionaries.count);
         
         self.businesses = [Business businessesWithDictionaries:businessDictionaries];
         [self.tableView reloadData];

@@ -42,6 +42,7 @@
     self.addressLabel.text = self.business.address;
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
     self.categoryLabel.text = self.business.categories;
+    self.dealLabel.text     = self.business.deal;
 }
 
 // implemet this fucntion to align stuff properly

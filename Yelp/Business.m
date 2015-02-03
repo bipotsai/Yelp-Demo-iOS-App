@@ -12,7 +12,7 @@
 
 -(id) initWithDictionary:(NSDictionary *) dictionary{
     self = [super init];
-            
+    
     if(self){
         
         // categories is array of arrays hence pluck out and concatenate by string
@@ -47,7 +47,16 @@
             self.address            = @"";
         }
         
-       
+        NSArray *dealOptionsTitle          = [dictionary valueForKeyPath:@"deals.options.title"];
+        NSString *dealTitle = @"";
+        if(dealOptionsTitle.count>0){
+            if(dealOptionsTitle[0]){
+                dealTitle = dealOptionsTitle[0][0];
+            }
+            dealTitle = [NSString stringWithFormat:@"%@ Deal", dealOptionsTitle[0][0]];
+        }
+        self.deal               = dealTitle;
+        
         self.numReviews         = [dictionary[@"review_count"] integerValue];
         
         float milesPerMeter     = 0.000621317;

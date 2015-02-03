@@ -149,7 +149,7 @@
     //How did you get the index path from here??
     NSIndexPath *indexPath = [self.filterTableView indexPathForCell:switchCell];
     
-     NSLog(@"%@", [NSString stringWithFormat:@"Check this Section :%ld Row : %ld", indexPath.section, indexPath.row ]);
+    NSLog(@"%@", [NSString stringWithFormat:@"Check this Section :%ld Row : %ld", indexPath.section, indexPath.row ]);
     
     if(indexPath.section == 0){
         if(value){

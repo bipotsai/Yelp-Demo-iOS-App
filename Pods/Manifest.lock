@@ -21,13 +21,16 @@ PODS:
   - BDBOAuth1Manager (1.2.0):
     - AFNetworking/NSURLConnection (~> 2.2.0)
     - AFNetworking/NSURLSession (~> 2.2.0)
+  - UIScrollView-InfiniteScroll (0.6.0)
 
 DEPENDENCIES:
   - AFNetworking
   - BDBOAuth1Manager
+  - UIScrollView-InfiniteScroll
 
 SPEC CHECKSUMS:
   AFNetworking: 8dde8c8a6597ad95dac332a593c27e541bc87371
   BDBOAuth1Manager: 468477f0425ce24b3a19a34bbf176fac11225232
+  UIScrollView-InfiniteScroll: 7f4c8a135bac346af868be2f8591f1686fe2f9c2
 
 COCOAPODS: 0.35.0

@@ -20,10 +20,10 @@
     return self;
 }
 
-- (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term params:(NSDictionary *)params success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+- (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term offset:(int)offset params:(NSDictionary *)params success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     
     // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
-    NSDictionary *defaults = @{@"term": term, @"limit" : @20, @"offset" : @5 ,@"ll" : @"37.774866,-122.394556"};
+    NSDictionary *defaults = @{@"term": term, @"limit" : @20, @"offset" :[NSNumber numberWithInt:offset], @"ll" : @"37.774866,-122.394556"};
     
     // allowing to add more parameters to teh search api...
     NSMutableDictionary *allParameters = [defaults mutableCopy];
