@@ -114,6 +114,7 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
             [self fetchBusinessWithQuery:@"restaurants" offset:self.offset params:self.params];
             // finish infinite scroll animation
             [scrollView finishInfiniteScroll];
+            
         }];
     }
     
@@ -170,7 +171,14 @@ NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
         
 //        NSLog(@"Result Set Found :  %ld items", businessDictionaries.count);
         
-        self.businesses = [Business businessesWithDictionaries:businessDictionaries];
+        //if offset is present then we need to append to teh existing dictionary
+        if(offset>0){
+            NSArray *offsetBusinesses   = [Business businessesWithDictionaries:businessDictionaries];
+            self.businesses             = [self.businesses arrayByAddingObjectsFromArray:offsetBusinesses];
+        } else{
+            self.businesses             = [Business businessesWithDictionaries:businessDictionaries];
+        }
+        
         [self.tableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -10,6 +10,7 @@
 
 
 @class CollectiveViewController;
+
 @protocol CollectiveViewControllerDelegate <NSObject>
 
 -(void) collectiveViewController:(CollectiveViewController *) collectiveViewController didChangeFilter:(NSDictionary *) collectivefilters;
